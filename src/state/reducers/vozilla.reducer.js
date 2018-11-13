@@ -1,7 +1,7 @@
-import {FETCH_VEHICLES_FAILURE, FETCH_VEHICLES_START, FETCH_VEHICLES_SUCCESS} from "../../constats/types";
+import {FETCH_OBJECTS_FAILURE, FETCH_OBJECTS_START, FETCH_OBJECTS_SUCCESS} from "../../constats/types";
 
 const initialState = {
-  vehicles: {
+  objects: {
     isLoading: false,
     isEmpty: true,
     data: {}
@@ -10,28 +10,28 @@ const initialState = {
 
 const vozillaReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_VEHICLES_START:
+    case FETCH_OBJECTS_START:
       return {
         ...state,
-        vehicles: {
+        objects: {
           isLoading: true
         }
       }
 
-    case FETCH_VEHICLES_SUCCESS:
+    case FETCH_OBJECTS_SUCCESS:
       return {
         ...state,
-        vehicles: {
+        objects: {
           isLoading: false,
           isEmpty: false,
-          data: action.payload.objects
+          data: action.payload
         }
       }
 
-    case FETCH_VEHICLES_FAILURE:
+    case FETCH_OBJECTS_FAILURE:
       return {
         ...state,
-        vehicles: {
+        objects: {
           isLoading: false,
           isEmpty: false,
           data: {}
