@@ -6,6 +6,8 @@ import {InfoBox} from 'react-google-maps/lib/components/addons/InfoBox'
 
 import {CloseBox} from './Content'
 
+import {parkingMarker, poiMarker} from '../../../constats/images'
+
 class VehicleMarker extends Component {
   state = {
     isOpen: false
@@ -17,11 +19,32 @@ class VehicleMarker extends Component {
     })
   }
 
+  markerType = type => {
+    switch(type) {
+      case 'parking':
+        return parkingMarker
+      case 'poi':
+        return poiMarker
+      case 'vehicles':
+
+      default:
+        return {
+          path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+          scale: 1.25,
+          strokeOpacity: 0,
+          strokeWeight: 1.0,
+          fillColor:'red',
+          fillOpacity: 1
+        }
+    }
+  }
   render() {
     const {coordinates, data} = this.props
-    console.log(data)
+
     return (
-      <Marker position={coordinates} onClick={this.handleToggle}>
+      <Marker position={coordinates}
+              onClick={this.handleToggle}
+              icon={this.markerType(data.discriminator)}>
         {this.state.isOpen && (
           <InfoBox
             onCloseClick={this.handleToggle}
