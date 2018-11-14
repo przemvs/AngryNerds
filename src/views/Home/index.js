@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import {connect} from "react-redux";
-import {getObjects} from "../../state/actions/vozilla.actions";
-import Map from "../../components/Map";
-import Wrapper from "./Wrapper";
-import Filters from "../../components/Filters";
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
+import {getObjects} from '../../state/actions/vozilla.actions'
+import Map from '../../components/Map'
+import Filters from '../../components/Filters'
 
 class Home extends Component {
   state = {
@@ -29,7 +29,7 @@ class Home extends Component {
     ]
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.customFilters(this.state.filters)
   }
 
@@ -43,30 +43,30 @@ class Home extends Component {
     const {filters} = this.state
 
     const singleFilter = filters.map(item => item).filter(item => item.value === name)
-    singleFilter[0].checked = checked;
+    singleFilter[0].checked = checked
 
     this.setState({filters: filters})
     this.customFilters(filters)
-
   }
 
   render() {
     const {data, isLoading, isEmpty} = this.props
 
     return (
-      <Wrapper>
-        <Filters filters={this.state.filters}
-                 changeFilter={this.changeFilter} />
-        {
-          !isLoading && !isEmpty ? (
-              <Map objects={data.objects}
-                   loadingElement={<div style={{height: `90vh`}} />}
-                   containerElement={<div style={{height: `90vh`, width: `100%`}} />}
-                   mapElement={<div style={{height: `90vh`, width: `100%`}} />} />
-          ) : (<div>Loading...</div>)
-        }
-      </Wrapper>
-    );
+      <div>
+        <Filters filters={this.state.filters} changeFilter={this.changeFilter} />
+        {!isLoading && !isEmpty ? (
+          <Map
+            objects={data.objects}
+            loadingElement={<div style={{height: `90vh`}} />}
+            containerElement={<div style={{height: `90vh`, width: `100%`}} />}
+            mapElement={<div style={{height: `90vh`, width: `100%`}} />}
+          />
+        ) : (
+          <div>Loading...</div>
+        )}
+      </div>
+    )
   }
 }
 
@@ -76,6 +76,13 @@ function mapStateToProps({objects}) {
     isLoading: objects.objects.isLoading,
     isEmpty: objects.objects.isEmpty
   }
+}
+
+Home.propTypes = {
+  data: PropTypes.object,
+  isLoading: PropTypes.bool,
+  isEmpty: PropTypes.bool,
+  getObjects: PropTypes.func
 }
 
 export default connect(

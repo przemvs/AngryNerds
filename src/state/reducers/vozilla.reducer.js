@@ -1,4 +1,8 @@
-import {FETCH_OBJECTS_FAILURE, FETCH_OBJECTS_START, FETCH_OBJECTS_SUCCESS} from "../../constats/types";
+import {
+  FETCH_OBJECTS_FAILURE,
+  FETCH_OBJECTS_START,
+  FETCH_OBJECTS_SUCCESS
+} from '../../constats/types'
 
 const initialState = {
   objects: {

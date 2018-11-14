@@ -17,5 +17,4 @@ const CloseBox = styled.div`
   z-index: 2;
 `
 
-
 export {CloseBox}

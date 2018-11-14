@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import {compose, withProps} from 'recompose'
 import {withGoogleMap, withScriptjs, GoogleMap} from 'react-google-maps'
 import VehicleMarker from './VehicleMarker'
-import { MarkerClusterer } from "react-google-maps/lib/components/addons/MarkerClusterer"
+import {MarkerClusterer} from 'react-google-maps/lib/components/addons/MarkerClusterer'
 import {carCluster, parkingCluster, poiCluster} from '../../constats/images'
 
 const Map = compose(
@@ -13,8 +13,12 @@ const Map = compose(
 )(({objects}) => {
   const mapStyle = require('./map-style.json')
 
-  const vehicles = objects.map(object => object).filter(criteria => criteria.discriminator === 'vehicle')
-  const parkings = objects.map(object => object).filter(criteria => criteria.discriminator === 'parking')
+  const vehicles = objects
+    .map(object => object)
+    .filter(criteria => criteria.discriminator === 'vehicle')
+  const parkings = objects
+    .map(object => object)
+    .filter(criteria => criteria.discriminator === 'parking')
   const pois = objects.map(object => object).filter(criteria => criteria.discriminator === 'poi')
 
   const renderMarkers = types =>
@@ -68,11 +72,7 @@ const Map = compose(
       }}
       defaultOptions={{styles: mapStyle}}
     >
-      <MarkerClusterer
-        enableRetinaIcons
-        gridSize={25}
-        styles={generateClusterStyle(carCluster)}
-      >
+      <MarkerClusterer enableRetinaIcons gridSize={25} styles={generateClusterStyle(carCluster)}>
         {renderMarkers(vehicles)}
       </MarkerClusterer>
       <MarkerClusterer
@@ -82,20 +82,14 @@ const Map = compose(
       >
         {renderMarkers(parkings)}
       </MarkerClusterer>
-      <MarkerClusterer
-        enableRetinaIcons
-        gridSize={25}
-        styles={generateClusterStyle(poiCluster)}
-      >
+      <MarkerClusterer enableRetinaIcons gridSize={25} styles={generateClusterStyle(poiCluster)}>
         {renderMarkers(pois)}
       </MarkerClusterer>
     </GoogleMap>
+  ) : objects.length === 0 ? (
+    <GoogleMap defaultZoom={12} defaultCenter={centerMap} defaultOptions={{styles: mapStyle}} />
   ) : (
-    objects.length === 0 ? <GoogleMap
-      defaultZoom={12}
-      defaultCenter={centerMap}
-      defaultOptions={{styles: mapStyle}}
-    /> : <div>Loading...</div>
+    <div>Loading...</div>
   )
 })
 
