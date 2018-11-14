@@ -1,4 +1,8 @@
-import {FETCH_OBJECTS_FAILURE, FETCH_OBJECTS_START, FETCH_OBJECTS_SUCCESS} from "../../constats/types";
+import {
+  FETCH_OBJECTS_FAILURE,
+  FETCH_OBJECTS_START,
+  FETCH_OBJECTS_SUCCESS
+} from '../../constats/types'
 import vozillaService from '../services/vozilla'
 
 export const getObjects = filters => async dispatch => {

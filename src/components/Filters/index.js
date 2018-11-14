@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import Checkbox from "../Checkbox";
+import PropTypes from 'prop-types'
+import Checkbox from '../Checkbox'
 
 class Filters extends Component {
   render() {
@@ -8,16 +9,24 @@ class Filters extends Component {
     return (
       <div>
         Filtry
-        {
-          filters.map((item, index) =>
-            <div className="filter__element" key={index}>
-              <Checkbox onChange={changeFilter} name={item.value} label={item.label} checked={item.checked} />
-              </div>
-          )
-        }
+        {filters.map((item, index) => (
+          <div className="filter__element" key={index}>
+            <Checkbox
+              onChange={changeFilter}
+              name={item.value}
+              label={item.label}
+              checked={item.checked}
+            />
+          </div>
+        ))}
       </div>
     )
   }
+}
+
+Filters.propTypes = {
+  filters: PropTypes.array,
+  changeFilter: PropTypes.func
 }
 
 export default Filters
