@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
-    "connected-react-router": "^5.0.1",
     "constants": "^0.0.2",
+    "history": "^4.7.2",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
     "react-google-maps": "^9.4.5",
@@ -28,5 +28,8 @@
     ">0.25%",
     "not op_mini all",
     "ie 11"
-  ]
+  ],
+  "devDependencies": {
+    "eslint-plugin-prettier": "^3.0.0"
+  }
 }

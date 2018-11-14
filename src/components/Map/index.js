@@ -4,16 +4,21 @@ import PropTypes from 'prop-types'
 import {compose, withProps} from 'recompose'
 import {withGoogleMap, withScriptjs, GoogleMap} from 'react-google-maps'
 import VehicleMarker from './VehicleMarker'
-import { MarkerClusterer } from "react-google-maps/lib/components/addons/MarkerClusterer";
+import { MarkerClusterer } from "react-google-maps/lib/components/addons/MarkerClusterer"
+import {carCluster, parkingCluster, poiCluster} from '../../constats/images'
 
 const Map = compose(
   withScriptjs,
   withGoogleMap
-)(({vehicles}) => {
+)(({objects}) => {
   const mapStyle = require('./map-style.json')
 
-  const renderMarkers = () =>
-    vehicles.map((item, index) => (
+  const vehicles = objects.map(object => object).filter(criteria => criteria.discriminator === 'vehicle')
+  const parkings = objects.map(object => object).filter(criteria => criteria.discriminator === 'parking')
+  const pois = objects.map(object => object).filter(criteria => criteria.discriminator === 'poi')
+
+  const renderMarkers = types =>
+    types.map((item, index) => (
       <VehicleMarker
         key={index}
         data={item}
@@ -27,7 +32,7 @@ const Map = compose(
   const fitMap = map => {
     const bounds = new google.maps.LatLngBounds()
 
-    vehicles.map(item => {
+    objects.map(item => {
       const latLng = new google.maps.LatLng(item.location.latitude, item.location.longitude)
       bounds.extend(latLng)
     })
@@ -37,31 +42,65 @@ const Map = compose(
     }
   }
 
-  return vehicles && vehicles.length !== 0 ? (
+  const generateClusterStyle = type => {
+    return [
+      {
+        url: type,
+        height: 32,
+        width: 32,
+        textColor: '#fff'
+      }
+    ]
+  }
+
+  const centerMap = {
+    lat: 51.107883,
+    lng: 17.038538
+  }
+
+  return objects && objects.length !== 0 ? (
     <GoogleMap
       ref={fitMap}
       defaultZoom={12}
       defaultCenter={{
-        lat: parseFloat(vehicles[0].location.latitude),
-        lng: parseFloat(vehicles[0].location.longitude)
+        lat: parseFloat(objects[0].location.latitude),
+        lng: parseFloat(objects[0].location.longitude)
       }}
       defaultOptions={{styles: mapStyle}}
     >
       <MarkerClusterer
-        averageCenter
         enableRetinaIcons
-        gridSize={60}
+        gridSize={25}
+        styles={generateClusterStyle(carCluster)}
       >
-      {renderMarkers()}
+        {renderMarkers(vehicles)}
+      </MarkerClusterer>
+      <MarkerClusterer
+        enableRetinaIcons
+        gridSize={25}
+        styles={generateClusterStyle(parkingCluster)}
+      >
+        {renderMarkers(parkings)}
+      </MarkerClusterer>
+      <MarkerClusterer
+        enableRetinaIcons
+        gridSize={25}
+        styles={generateClusterStyle(poiCluster)}
+      >
+        {renderMarkers(pois)}
       </MarkerClusterer>
     </GoogleMap>
   ) : (
-    <div>...</div>
+    objects.length === 0 ? <GoogleMap
+      defaultZoom={12}
+      defaultCenter={centerMap}
+      defaultOptions={{styles: mapStyle}}
+    /> : <div>Loading...</div>
   )
 })
 
 Map.propTypes = {
-  vehicles: PropTypes.array
+  objects: PropTypes.array
 }
 
 export default withProps({

@@ -1,13 +1,13 @@
-import {FETCH_VEHICLES_FAILURE, FETCH_VEHICLES_START, FETCH_VEHICLES_SUCCESS} from "../../constats/types";
+import {FETCH_OBJECTS_FAILURE, FETCH_OBJECTS_START, FETCH_OBJECTS_SUCCESS} from "../../constats/types";
 import vozillaService from '../services/vozilla'
 
-export const getVehicles = () => async dispatch => {
-  dispatch({type: FETCH_VEHICLES_START})
+export const getObjects = filters => async dispatch => {
+  dispatch({type: FETCH_OBJECTS_START})
   try {
-    const res = await vozillaService.fetchVehicles()
-    dispatch({type: FETCH_VEHICLES_SUCCESS, payload: res.data})
+    const res = await vozillaService.fetchObjects(filters)
+    dispatch({type: FETCH_OBJECTS_SUCCESS, payload: res.data})
   } catch (error) {
-    dispatch({type: FETCH_VEHICLES_FAILURE})
+    dispatch({type: FETCH_OBJECTS_FAILURE})
     console.log(error)
   }
 }
